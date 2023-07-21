@@ -2,15 +2,12 @@
   Build up platform processor information.
 
   Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
-  Copyright (c) 2023, Academy of Intelligent Innovation. All rights reserved.<BR>
+  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-//
-// The package level header files this module uses
-//
 #include <PiPei.h>
 
 //
@@ -109,7 +106,8 @@ CreateSG2042ProcessorSmbiosDataHob (
 /**
   Build processor and platform information for the SG2042 platform
 
-  @return EFI_SUCCESS     Status.
+  @retval EFI_SUCCESS       The RISC-V SMBIOS HOBs were successfully built.
+  @retval Other             The operation failed.
 
 **/
 EFI_STATUS

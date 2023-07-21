@@ -3,7 +3,7 @@
   related to the SD Host Controller Interface (SDHCI) for SD card host controllers.
 
   Copyright (c) 2016-2017, ARM Limited and Contributors. All rights reserved.
-  Copyright (c) 2023, Academy of Intelligent Innovation. All rights reserved.<BR>
+  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-3-Clause
 
 **/

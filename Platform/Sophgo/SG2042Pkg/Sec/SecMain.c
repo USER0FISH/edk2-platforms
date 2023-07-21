@@ -3,6 +3,7 @@
 
   Copyright (c) 2008 - 2023, Intel Corporation. All rights reserved.<BR>
   Copyright (c) 2022, Ventana Micro Systems Inc. All rights reserved.<BR>
+  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/

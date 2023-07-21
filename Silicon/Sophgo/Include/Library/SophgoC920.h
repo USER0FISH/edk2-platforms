@@ -2,7 +2,7 @@
   Sophgo c920 Core library definitions.
 
   Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
-  Copyright (c) 2023, Academy of Intelligent Innovation. All rights reserved.<BR>
+  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
   
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

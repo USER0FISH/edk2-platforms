@@ -2,7 +2,7 @@
   Define a simple and generic interface to access eMMC and SD-card devices.
 
   Copyright (c) 2018-2021, ARM Limited and Contributors. All rights reserved.
-  Copyright (c) 2023, Academy of Intelligent Innovation. All rights reserved.<BR>
+  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-3-Clause
 

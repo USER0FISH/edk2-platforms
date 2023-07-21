@@ -2,7 +2,7 @@
   Main Header file for the MMC DXE driver
 
   Copyright (c) 2011-2015, ARM Limited. All rights reserved.
-  Copyright (c) 2023, Academy of Intelligent Innovation. All rights reserved.<BR>
+  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

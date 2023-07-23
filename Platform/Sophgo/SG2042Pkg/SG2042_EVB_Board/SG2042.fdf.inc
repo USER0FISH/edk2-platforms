@@ -1,7 +1,6 @@
 ## @file
 #  Definitions of Flash definition file on Sophgo SG2042 EVB RISC-V platform
 #
-#  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -25,7 +24,6 @@ DEFINE CODE_SIZE         = 0x00740000
 DEFINE CODE_BLOCKS       = 0x740
 DEFINE VARS_BLOCKS       = 0x20
 
-
 #
 # Other FV regions are in the second FW domain.
 # The size of memory region must be power of 2.
@@ -48,24 +46,21 @@ DEFINE VARS_FTW_WORKING_SIZE         = 0x00001000
 DEFINE VARS_FTW_SPARE_OFFSET         = $(VARS_FTW_WORKING_OFFSET) + $(VARS_FTW_WORKING_SIZE)
 DEFINE VARS_FTW_SPARE_SIZE           = 0x00018000
 
-
 DEFINE VARIABLE_FW_SIZE  = $(VARS_FTW_SPARE_OFFSET) + $(VARS_FTW_SPARE_SIZE) - $(VARS_OFFSET)
 
-
-SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdBaseAddress = $(FW_BASE_ADDRESS) + $(VARS_OFFSET)
-SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdSize        = $(VARS_SIZE) + $(VARS_FTW_WORKING_SIZE) + $(VARS_FTW_SPARE_SIZE)
-SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdBlockSize   = $(BLOCK_SIZE)
+SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdBaseAddress             = $(FW_BASE_ADDRESS) + $(VARS_OFFSET)
+SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdSize                    = $(VARS_SIZE) + $(VARS_FTW_WORKING_SIZE) + $(VARS_FTW_SPARE_SIZE)
+SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdBlockSize               = $(BLOCK_SIZE)
 SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionBaseAddress = $(CODE_BASE_ADDRESS) + $(VARS_OFFSET)
 SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionSize        = $(VARIABLE_FW_SIZE)
-
-
-SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase = $(CODE_BASE_ADDRESS) + $(FW_SIZE) + 0x1FF0000
-SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize = 0x10000
+SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase                  = $(CODE_BASE_ADDRESS) + $(FW_SIZE) + 0x1FF0000
+SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize                  = 0x10000
 
 SET gUefiRiscVPkgTokenSpaceGuid.PcdRiscVMachineTimerFrequencyInHerz    = 50000000
 
 SET gSophgoSG2042PlatformsPkgTokenSpaceGuid.PcdNumberofC920Cores       = 64
 SET gSophgoSG2042PlatformsPkgTokenSpaceGuid.PcdSG2042SDIOBase          = 0x704002B000
+
 SET gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase               = 0x7040000000
 SET gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate                    = 115200
 SET gHisiTokenSpaceGuid.PcdSerialPortSendDelay                         = 10000000

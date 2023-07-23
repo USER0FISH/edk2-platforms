@@ -1,7 +1,6 @@
 ## @file
 #  RISC-V EFI on Sophgo SG2042 EVB RISC-V platform
 #
-#  Copyright (c) 2019-2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -148,10 +147,7 @@
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
 !endif
   RiscVSbiLib|MdePkg/Library/BaseRiscVSbiLib/BaseRiscVSbiLib.inf
-  RiscVPlatformTimerLib|Platform/Sophgo/SG2042Pkg/Library/RiscVPlatformTimerLib/RiscVPlatformTimerLib.inf
-  # MachineModeTimerLib|Silicon/RISC-V/ProcessorPkg/Library/RiscVReadMachineModeTimer/EmulatedMachineModeTimerLib/EmulatedMachineModeTimerLib.inf
   CpuExceptionHandlerLib|UefiCpuPkg/Library/BaseRiscV64CpuExceptionHandlerLib/BaseRiscV64CpuExceptionHandlerLib.inf
-
 
   # Flattened Device Tree (FDT) access library
   FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
@@ -166,16 +162,17 @@
 
   ReportStatusCodeLib|MdeModulePkg/Library/PeiReportStatusCodeLib/PeiReportStatusCodeLib.inf
   ExtractGuidedSectionLib|MdePkg/Library/BaseExtractGuidedSectionLib/BaseExtractGuidedSectionLib.inf
+  PlatformSecLib|UefiCpuPkg/Library/PlatformSecLibNull/PlatformSecLibNull.inf
+  HobLib|EmbeddedPkg/Library/PrePiHobLib/PrePiHobLib.inf
+  PrePiHobListPointerLib|OvmfPkg/RiscVVirt/Library/PrePiHobListPointerLib/PrePiHobListPointerLib.inf
+  MemoryAllocationLib|EmbeddedPkg/Library/PrePiMemoryAllocationLib/PrePiMemoryAllocationLib.inf
 
 !ifdef $(SOURCE_DEBUG_ENABLE)
   DebugAgentLib|SourceLevelDebugPkg/Library/DebugAgent/SecPeiDebugAgentLib.inf
 !endif
 
-  MemoryAllocationLib|MdePkg/Library/PeiMemoryAllocationLib/PeiMemoryAllocationLib.inf
-
   SiliconSophgoC920CoreInfoLib|Silicon/Sophgo/C920/Library/PeiCoreInfoHobLib/PeiCoreInfoHobLib.inf
   RiscVCoreplexInfoLib|Platform/Sophgo/SG2042Pkg/Library/PeiCoreInfoHobLib/PeiCoreInfoHobLib.inf
-
 
 [LibraryClasses.common.DXE_CORE]
   HobLib|MdePkg/Library/DxeCoreHobLib/DxeCoreHobLib.inf
@@ -198,7 +195,7 @@
   DxeCoreEntryPoint|MdePkg/Library/DxeCoreEntryPoint/DxeCoreEntryPoint.inf
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   ReportStatusCodeLib|MdeModulePkg/Library/RuntimeDxeReportStatusCodeLib/RuntimeDxeReportStatusCodeLib.inf
-  ResetSystemLib|Platform/Sophgo/SG2042Pkg/Library/ResetSystemLib/BaseResetSystemLib.inf
+  ResetSystemLib|OvmfPkg/RiscVVirt/Library/ResetSystemLib/BaseResetSystemLib.inf
   UefiRuntimeLib|MdePkg/Library/UefiRuntimeLib/UefiRuntimeLib.inf
 !ifdef $(DEBUG_ON_SERIAL_PORT)
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
@@ -301,7 +298,7 @@
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0x21, 0xaa, 0x2c, 0x46, 0x14, 0x76, 0x03, 0x45, 0x83, 0x6e, 0x8a, 0xb6, 0xf4, 0x66, 0x23, 0x31 }
 
-    #
+  #
   # Optional feature to help prevent EFI memory map fragments
   # Turned on and off via: PcdPrePiProduceMemoryTypeInformationHob
   # Values are in EFI Pages (4K). DXE Core will make sure that

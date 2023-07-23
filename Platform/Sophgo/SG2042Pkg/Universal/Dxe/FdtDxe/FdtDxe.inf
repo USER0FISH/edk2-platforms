@@ -47,7 +47,5 @@
   gFdtHobGuid        ## PRODUCES
   gFdtTableGuid      ## PRODUCES
 
-[Pcd]
-
 [Depex]
   TRUE

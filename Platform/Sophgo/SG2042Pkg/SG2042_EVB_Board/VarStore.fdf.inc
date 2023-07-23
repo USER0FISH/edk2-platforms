@@ -1,7 +1,6 @@
 ## @file
 #  FDF include file with Layout Regions that define an empty variable store.
 #
-#  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #  Copyright (C) 2014, Red Hat, Inc.
 #  Copyright (c) 2006 - 2013, Intel Corporation. All rights reserved.<BR>
 #

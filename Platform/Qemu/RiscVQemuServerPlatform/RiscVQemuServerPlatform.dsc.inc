@@ -14,7 +14,7 @@
 
 [Defines]
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x80000047
-
+  
 [LibraryClasses.common]
 !ifdef $(SOURCE_DEBUG_ENABLE)
   PeCoffExtraActionLib|SourceLevelDebugPkg/Library/PeCoffExtraActionLibDebug/PeCoffExtraActionLibDebug.inf

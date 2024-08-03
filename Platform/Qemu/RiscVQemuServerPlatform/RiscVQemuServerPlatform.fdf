@@ -178,10 +178,12 @@ INF  OvmfPkg/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
 #
 # ACPI Support
 #
-INF  OvmfPkg/PlatformHasAcpiDtDxe/PlatformHasAcpiDtDxe.inf
 INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
 INF  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
-INF  OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
+!if $(RV_Server_platform) == TRUE
+INF RuleOverride = ACPITABLE Silicon/Qemu/RiscVQemuServerPlatform/AcpiTables/AcpiTables.inf
+INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+!endif
 
 #
 # PCI support

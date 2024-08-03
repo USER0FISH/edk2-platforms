@@ -1,0 +1,30 @@
+## @file
+#
+#  ACPI table data and ASL sources required to boot the platform.
+#
+#  Copyright (c) 2024, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = RiscVQemuServerAcpiTables
+  FILE_GUID                      = D117D3AA-5269-D1E7-10D7-6F12D6275760
+  MODULE_TYPE                    = USER_DEFINED
+  VERSION_STRING                 = 1.0
+
+[Sources]
+  Dsdt/Dsdt.asl
+  Fadt.aslc
+  Spcr.aslc
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Qemu/Silicon/Qemu/RiscVQemuServerPlatform/RiscVQemuServerPlatform.dec
+
+[FixedPcd]
+   

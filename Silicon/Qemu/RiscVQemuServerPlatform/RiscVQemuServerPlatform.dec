@@ -1,0 +1,41 @@
+#
+#  Copyright (c) 2024, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001B
+  PACKAGE_NAME                   = RiscVServerQemuPkg
+  PACKAGE_GUID                   = D470F4FA-7A58-B02E-5A39-1781C42633A1
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include                        # Root include for the package
+
+[Guids.common]
+   gRiscVQemuServerPlatformPkgTokenSpaceGuid = { 0x1a2b3c4d, 0x5e6f, 0x7a8b, { 0xc9, 0xd0, 0xe1, 0xf2, 0x34, 0x56, 0x78, 0x90 } }
+
+[PcdsFixedAtBuild.common]
+   # Non discoverable devices Pcds   (关于AHCI与XHCI控制器的地址，在QEMU中没有体现出来)
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformAhciBase|0|UINT64|0x00000001
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformAhciSize|0x10000|UINT32|0x00000002
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformXhciBase|0|UINT64|0x00000003
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformXhciSize|0x10000|UINT32|0x00000004
+ 
+   # PCDs complementing PCIe layout pulled into ACPI tables
+   # Limit = Base + Size - 1
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPciIoLimit|0x0000ffff|UINT32|0x00000006
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPciMmio32Limit|0xEFFFFFFF|UINT32|0x00000007
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPciMmio64Limit|0xFFFFFFFFFF|UINT64|0x00000008
+ 
+   # PCDs complementing gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+   # BarLimit = BaseAddress + BarSize - 1
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPciExpressBarSize|0x10000000|UINT64|0x00000009
+   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPciExpressBarLimit|0xFFFFFFFF|UINT64|0x00000010
+
+   #PCDs complementing gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
+   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0|UINT64|0x00000011
+
+
+

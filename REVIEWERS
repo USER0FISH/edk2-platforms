@@ -9,8 +9,9 @@
 /Platform/AMD/VanGoghBoard/** @fhh200000 @mingxzha @YSHRong
 
 # Ampere
-/Platform/Ampere/** @bcran @chuongtranle @leiflindholm
-/Silicon/Ampere/** @bcran @chuongtranle @leiflindholm
+/Platform/Ampere/** @leiflindholm
+/Silicon/Ampere/** @leiflindholm
+/Platform/ADLINK/** @nhivp
 
 # ARM
 # Add Thomas Abraham

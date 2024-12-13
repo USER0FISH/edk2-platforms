@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -12,15 +12,8 @@
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
   GCC:*_*_AARCH64_DLINK_FLAGS = -z common-page-size=0x10000
 
-[BuildOptions]
-  GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
-
 [LibraryClasses.common]
-!if $(TARGET) == RELEASE
-  DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
-!else
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
-!endif
   DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
 
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
@@ -92,6 +85,7 @@
   MmCommunicationLib|Silicon/Ampere/AmpereAltraPkg/Library/MmCommunicationLib/MmCommunicationLib.inf
   FlashLib|Silicon/Ampere/AmpereAltraPkg/Library/FlashLib/FlashLib.inf
   ManageabilityTransportHelperLib|ManageabilityPkg/Library/BaseManageabilityTransportHelperLib/BaseManageabilityTransportHelper.inf
+  FirmwareUpdateLib|Silicon/Ampere/AmpereAltraPkg/Library/SystemFirmwareUpdateLib/SystemFirmwareUpdateLib.inf
 
   #
   # ARM PL011 UART Driver
@@ -124,7 +118,7 @@
   # BDS Libraries
   #
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
-  PlatformBootManagerLib|ArmPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+  PlatformBootManagerLib|Silicon/Ampere/AmpereSiliconPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
 
   #
@@ -150,6 +144,18 @@
   PlatformPKProtectionLib|SecurityPkg/Library/PlatformPKProtectionLibVarPolicy/PlatformPKProtectionLibVarPolicy.inf
 
   #
+  # Capsule Update requirements
+  #
+  BmpSupportLib|MdeModulePkg/Library/BaseBmpSupportLib/BaseBmpSupportLib.inf
+  DisplayUpdateProgressLib|MdeModulePkg/Library/DisplayUpdateProgressLibGraphics/DisplayUpdateProgressLibGraphics.inf
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeCapsuleLib.inf
+  EdkiiSystemCapsuleLib|SignedCapsulePkg/Library/EdkiiSystemCapsuleLib/EdkiiSystemCapsuleLib.inf
+  FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+  IniParsingLib|SignedCapsulePkg/Library/IniParsingLib/IniParsingLib.inf
+  PlatformFlashAccessLib|Silicon/Ampere/AmpereAltraPkg/Library/PlatformFlashAccessLib/PlatformFlashAccessLib.inf
+  ShellCEntryLib|ShellPkg/Library/UefiShellCEntryLib/UefiShellCEntryLib.inf
+
+  #
   # re-use the UserPhysicalPresent() dummy implementation from the ovmf tree
   #
   PlatformSecureLib|OvmfPkg/Library/PlatformSecureLib/PlatformSecureLib.inf
@@ -168,10 +174,18 @@
   TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
 !endif
 
-  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
 
   ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
+
+!if $(TPM2_ENABLE) == TRUE
+  Tpm2DeviceLib|Silicon/Ampere/AmpereAltraPkg/Library/Tpm2DeviceLibArmCrb/Tpm2DeviceLibArmCrb.inf
+  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+!else
+  TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
+!endif
 
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
@@ -211,9 +225,14 @@
   ExtractGuidedSectionLib|MdePkg/Library/PeiExtractGuidedSectionLib/PeiExtractGuidedSectionLib.inf
   PeiServicesTablePointerLib|ArmPkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
 
+!if $(TPM2_ENABLE) == TRUE
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/PeiCryptLib.inf
+!endif
+
   SmbusLib|MdePkg/Library/PeiSmbusLibSmbus2Ppi/PeiSmbusLibSmbus2Ppi.inf
   IpmiLib|MdeModulePkg/Library/PeiIpmiLibIpmiPpi/PeiIpmiLibIpmiPpi.inf
   ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportSsifLib/Pei/PeiManageabilityTransportSsif.inf
+  IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLibPei.inf
 
 [LibraryClasses.common.SEC, LibraryClasses.common.PEIM]
   MemoryInitPeiLib|Silicon/Ampere/AmpereAltraPkg/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
@@ -253,7 +272,7 @@
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
-  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeRuntimeCapsuleLib.inf
   ReportStatusCodeLib|MdeModulePkg/Library/RuntimeDxeReportStatusCodeLib/RuntimeDxeReportStatusCodeLib.inf
 !if $(SECURE_BOOT_ENABLE) == TRUE
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/RuntimeCryptLib.inf
@@ -267,25 +286,15 @@
   NVParamLib|Silicon/Ampere/AmpereAltraPkg/Library/NVParamLib/RuntimeNVParamLib.inf
   AmpereCpuLib|Silicon/Ampere/AmpereAltraPkg/Library/AmpereCpuLib/RuntimeAmpereCpuLib.inf
   FlashLib|Silicon/Ampere/AmpereAltraPkg/Library/FlashLib/RuntimeFlashLib.inf
+  MailboxInterfaceLib|Silicon/Ampere/AmpereAltraPkg/Library/MailboxInterfaceLib/RuntimeMailboxInterfaceLib.inf
+  SystemFirmwareInterfaceLib|Silicon/Ampere/AmpereAltraPkg/Library/SystemFirmwareInterfaceLib/RuntimeSystemFirmwareInterfaceLib.inf
+  FirmwareUpdateLib|Silicon/Ampere/AmpereAltraPkg/Library/SystemFirmwareUpdateLib/RuntimeSystemFirmwareUpdateLib.inf
 
 [LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
   SmbusLib|MdePkg/Library/DxeSmbusLib/DxeSmbusLib.inf
   IpmiLib|MdeModulePkg/Library/DxeIpmiLibIpmiProtocol/DxeIpmiLibIpmiProtocol.inf
   IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportSsifLib/Dxe/DxeManageabilityTransportSsif.inf
-
-[LibraryClasses.ARM,LibraryClasses.AARCH64]
-  #
-  # It is not possible to prevent the ARM compiler for generic intrinsic functions.
-  # This library provides the instrinsic functions generate by a given compiler.
-  # [LibraryClasses.ARM] and NULL mean link this library into all ARM images.
-  #
-  NULL|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
-
-  #
-  # Add support for GCC stack protector
-  #
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
 
 ################################################################################
 #
@@ -316,10 +325,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
 
 [PcdsFixedAtBuild.common]
-!ifdef $(FIRMWARE_VER)
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
-!endif
-
   gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength|1000000
   gEfiMdePkgTokenSpaceGuid.PcdMaximumAsciiStringLength|1000000
   gEfiMdePkgTokenSpaceGuid.PcdMaximumLinkedListLength|1000000
@@ -336,7 +341,7 @@
   # ASSERT_BREAKPOINT_ENABLED  0x10
   # ASSERT_DEADLOOP_ENABLED    0x20
 !if $(TARGET) == RELEASE
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x21
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x23
 !else
   gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2F
 !endif
@@ -512,13 +517,48 @@
   #
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|32
 
+  #
+  # SMBIOS PCDs
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|$(MAJOR_VER)
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|$(MINOR_VER)
+  gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Ampere(R)"
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Ampere(R)"
+  gArmTokenSpaceGuid.PcdProcessorAssetTag|L"Not Set"
+
+  #
+  # Increasing the maximum size of capsule is to cover ARM Trusted Firmware binaries
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxSizeNonPopulateCapsule|0xE00000
+
 [PcdsDynamicHii.common.DEFAULT]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|10
+  # Possible values are:
+  #  0: Connect Minimal Devices
+  #  1: Connect Network Devices
+  #  2: Connect All Devices
+  gEfiMdeModulePkgTokenSpaceGuid.PcdBootDiscoveryPolicy|L"BootDiscoveryPolicy"|gBootDiscoveryPolicyMgrFormsetGuid|0x0|1
+
+!if $(TPM2_ENABLE) == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x8|4|NV,BS
+!endif
 
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase64|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|0x0
+
+[PcdsDynamicExDefault.common.DEFAULT]
+!if $(TPM2_ENABLE) == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdActiveTpmInterfaceType|0x02
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x5a, 0xf2, 0x6b, 0x28, 0xc3, 0xc2, 0x8c, 0x40, 0xb3, 0xb4, 0x25, 0xe6, 0x75, 0x8b, 0x73, 0x17}
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2InitializationPolicy|0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2ScrtmPolicy|0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInitializationPolicy|0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2HashMask|3
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcg2HashAlgorithmBitmap|3
+!endif
 
 ################################################################################
 #
@@ -554,7 +594,6 @@
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   }
   MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
-  MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/BootProgress/BootProgressPeim/BootProgressPeim.inf
 
   #
@@ -562,6 +601,21 @@
   #
   Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
   ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
+
+!if $(TPM2_ENABLE) == TRUE
+  MdeModulePkg/Universal/ResetSystemPei/ResetSystemPei.inf
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Pei/Tcg2Pei.inf {
+    <LibraryClasses>
+      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterPei.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha1/HashInstanceLibSha1.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha512/HashInstanceLibSha512.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSm3/HashInstanceLibSm3.inf
+  }
+
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
+!endif
 
   #
   # DXE Phase modules
@@ -571,7 +625,6 @@
       NULL|MdeModulePkg/Library/DxeCrc32GuidedSectionExtractLib/DxeCrc32GuidedSectionExtractLib.inf
   }
   MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
-  MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/BootProgress/BootProgressDxe/BootProgressDxe.inf
 
   #
@@ -591,6 +644,9 @@
     <LibraryClasses>
 !if $(SECURE_BOOT_ENABLE) == TRUE
       NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
+!endif
+!if $(TPM2_ENABLE) == TRUE
+      NULL|SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.inf
 !endif
   }
 
@@ -618,6 +674,11 @@
       VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
   }
+
+  #
+  # Initialize works at Dxe phase
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/PlatformInitDxe/PlatformInitDxe.inf
 
   #
   # Timer
@@ -714,6 +775,7 @@
   #
   # Bds
   #
+  MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
   MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
   MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
   MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
@@ -721,6 +783,7 @@
   MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   MdeModulePkg/Application/UiApp/UiApp.inf {
     <LibraryClasses>
+      NULL|MdeModulePkg/Library/BootDiscoveryPolicyUiLib/BootDiscoveryPolicyUiLib.inf
       NULL|Silicon/Ampere/AmpereSiliconPkg/Library/PlatformUiLib/PlatformManagerUiLib.inf
       NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
       NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
@@ -731,6 +794,20 @@
   # Networking stack
   #
 !include NetworkPkg/Network.dsc.inc
+
+!if $(TPM2_ENABLE) == TRUE
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Dxe/Tcg2Dxe.inf {
+    <LibraryClasses>
+      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha1/HashInstanceLibSha1.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha512/HashInstanceLibSha512.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSm3/HashInstanceLibSm3.inf
+  }
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2AcpiDxe/Tcg2AcpiDxe.inf
+  MdeModulePkg/Universal/SmbiosMeasurementDxe/SmbiosMeasurementDxe.inf
+!endif
 
   #
   # UEFI application (Shell Embedded Boot Loader)
@@ -750,10 +827,14 @@
       HandleParsingLib|ShellPkg/Library/UefiHandleParsingLib/UefiHandleParsingLib.inf
       BcfgCommandLib|ShellPkg/Library/UefiShellBcfgCommandLib/UefiShellBcfgCommandLib.inf
     <PcdsFixedAtBuild>
-      gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0xFF
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x3F
       gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
       gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize|8000
   }
 !ifdef $(INCLUDE_TFTP_COMMAND)
   ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 !endif #$(INCLUDE_TFTP_COMMAND)
+
+  EmbeddedPkg/Drivers/MemoryAttributeManagerDxe/MemoryAttributeManagerDxe.inf
+  Silicon/Ampere/AmpereSiliconPkg/Drivers/PlatformBootManagerDxe/PlatformBootManagerDxe.inf
+  Silicon/Ampere/AmpereSiliconPkg/Drivers/IpmiBootDxe/IpmiBootDxe.inf

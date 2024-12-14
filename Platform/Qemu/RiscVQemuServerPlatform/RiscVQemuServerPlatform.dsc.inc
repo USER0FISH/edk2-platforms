@@ -7,6 +7,7 @@
 #  Copyright (c) 2015 - 2024, Intel Corporation. All rights reserved.
 #  Copyright (c) Microsoft Corporation.
 #  Copyright (C) 2024, Alibaba Group Holding Limited.<BR>
+#  Copyright (c) 2024, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #

@@ -5,6 +5,7 @@
 #  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #  Copyright (c) 2022, Ventana Micro Systems Inc. All rights reserved.<BR>
 #  Copyright (C) 2024, Alibaba Group Holding Limited.
+#  Copyright (c) 2024, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -71,7 +72,6 @@ APRIORI DXE {
 INF  MdeModulePkg/Core/Dxe/DxeMain.inf
 INF  MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
 INF  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-INF  OvmfPkg/Fdt/VirtioFdtDxe/VirtioFdtDxe.inf
 INF  EmbeddedPkg/Drivers/FdtClientDxe/FdtClientDxe.inf
 INF  OvmfPkg/Fdt/HighMemDxe/HighMemDxe.inf
 
@@ -108,14 +108,13 @@ INF  OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
 INF  MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
 #
-# FAT filesystem + GPT/MBR partitioning + UDF filesystem + virtio-fs
+# FAT filesystem + GPT/MBR partitioning + UDF filesystem + 
 #
 INF  MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
 INF  MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
 INF  FatPkg/EnhancedFatDxe/Fat.inf
 INF  MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
 INF  MdeModulePkg/Universal/Disk/UdfDxe/UdfDxe.inf
-INF  OvmfPkg/VirtioFsDxe/VirtioFsDxe.inf
 
 #
 # Status Code Routing
@@ -126,10 +125,6 @@ INF  MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntim
 #
 # Platform Driver
 #
-INF  OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
-INF  OvmfPkg/VirtioNetDxe/VirtioNet.inf
-INF  OvmfPkg/VirtioScsiDxe/VirtioScsi.inf
-INF  OvmfPkg/VirtioRngDxe/VirtioRng.inf
 
 INF  ShellPkg/Application/Shell/Shell.inf
 INF  ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
@@ -190,14 +185,11 @@ INF  UefiCpuPkg/CpuMmio2Dxe/CpuMmio2Dxe.inf
 INF  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
 INF  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
 INF  OvmfPkg/PciHotPlugInitDxe/PciHotPlugInit.inf
-INF  OvmfPkg/VirtioPciDeviceDxe/VirtioPciDeviceDxe.inf
-INF  OvmfPkg/Virtio10Dxe/Virtio10.inf
 
 #
 # Video support
 #
 INF  OvmfPkg/QemuRamfbDxe/QemuRamfbDxe.inf
-INF  OvmfPkg/VirtioGpuDxe/VirtioGpu.inf
 INF  OvmfPkg/PlatformDxe/Platform.inf
 
 #
